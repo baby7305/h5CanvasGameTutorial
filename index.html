@@ -78,6 +78,17 @@
 			// 在（200，300）处逆时针画一个半径为25，角度为0到270度的弧 				
 			context.arc(200, 300, 25, 0, 3 / 2 * Math.PI, false); //(3/2*PI radians = 270 degrees)				
 			context.stroke();
+
+			// 绘制文本
+			context.fillText('This is some text...', 330, 40);
+
+			// 修改字体
+			context.font = '10pt Arial';
+			context.fillText('This is in 10pt Arial...', 330, 60);
+
+			// 绘制空心的文本
+			context.font = '16pt Arial';
+			context.strokeText('This is stroked in 16pt Arial...', 330, 80);
 		}
 	</script>
 </head>
