@@ -27,6 +27,25 @@
 			// 绘制图片的局部
 			context.drawImage(image, 0, 0, 60, 50, 0, 420, 60, 50);
 
+			//平移和旋转
+			//平移原点至物体的位置
+			context.translate(250, 370);
+			//以新原点为中心旋转60度
+			context.rotate(Math.PI / 3);
+			context.drawImage(image, 0, 0, 60, 50, -30, -25, 60, 50);
+			//通过反向旋转和平移恢复原点状态
+			context.rotate(-Math.PI / 3);
+			context.translate(-240, -370);
+
+			//平移原点至物体的位置
+			context.translate(300, 370);
+			//以新原点为中心旋转
+			context.rotate(3 * Math.PI / 4);
+			context.drawImage(image, 0, 0, 60, 50, -30, -25, 60, 50);
+			//通过反向旋转和平移恢复原点状态
+			context.rotate(-3 * Math.PI / 4);
+			context.translate(-300, -370);
+
 		}
 	</script>
 </head>
