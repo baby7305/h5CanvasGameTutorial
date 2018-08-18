@@ -4,16 +4,53 @@
 <head>
 	<meta charset="utf-8" />
 	<title>Simple HTML5 File</title>
-	<script type="text/javascript" charset="UTF-8">
-		//这个函数将在页面完全加载后调用
-		function pageLoaded() {
-			alert('Hello World');
+
+	<script>
+		var audio = document.createElement("audio");
+		var mp3Support, oggSupport;
+
+		if (audio.canPlayType) {
+			// Currently canPlayType() returns: "", "maybe", or "probably"
+			mp3Support = "" !== audio.canPlayType("audio/mpeg");
+			oggSupport = "" !== audio.canPlayType("audio/ogg; codecs=\"vorbis\"");
+		} else {
+			//The audio tag is not supported
+			mp3Support = false;
+			oggSupport = false;
+		}
+
+		// Check for ogg, then mp3, and finally set soundFileExtn to undefined
+		var soundFileExtn = oggSupport ? ".ogg" : mp3Support ? ".mp3" : undefined;
+
+		if (soundFileExtn) {
+			var sound = new Audio();
+			// Load sound file with the detected extension
+
+			sound.src = "music/music" + soundFileExtn;
+			sound.play();
+		}
+	</script>
+
+	<script>
+		// Play the sound after waiting for it to load
+		if (soundFileExtn) {
+			var sound = new Audio();
+
+			sound.addEventListener("canplaythrough", function () {
+				sound.play();
+			});
+
+			// Load sound file with the detected extension
+			sound.src = "music/music" + soundFileExtn;
 		}
 	</script>
 </head>
 
-<body onload="pageLoaded()">
-
+<body>
+	<audio controls="controls">
+		<source src="music/music.ogg" type="audio/ogg" />
+		<source src="music/music.mp3" type="audio/mpeg" /> Your browser does not support HTML5 Audio. Please shift to a newer browser.
+	</audio>
 </body>
 
 </html>
