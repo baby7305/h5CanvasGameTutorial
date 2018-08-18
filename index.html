@@ -32,6 +32,52 @@
 			context.clearRect(210, 20, 30, 20);
 			// 清除（260，20）处宽30像素，高20像素的矩形区域			
 			context.clearRect(260, 20, 30, 20);
+
+			// 绘制复杂形状
+			// 填充三角形
+			context.beginPath();
+			context.moveTo(10, 120);	// 从点（10，120）开始
+			context.lineTo(10, 180);
+			context.lineTo(110, 150);
+			context.fill();			// 闭合形状并且以填充方式绘制出来
+
+			// 三角形的外边框
+			context.beginPath();
+			context.moveTo(140, 160); // 从点（140，160）开始
+			context.lineTo(140, 220);
+			context.lineTo(40, 190);
+			context.closePath();
+			context.stroke();
+
+			// 一个更复杂的多边形
+			context.beginPath();
+			context.moveTo(160, 160); // 从点（160，160）开始
+			context.lineTo(170, 220);
+			context.lineTo(240, 210);
+			context.lineTo(260, 170);
+			context.lineTo(190, 140);
+			context.closePath();
+			context.stroke();
+
+			// 绘制弧
+
+			// 绘制半圆弧
+			context.beginPath();
+			// 在（100，300）处逆时针画一个半径为40，角度从0到180度的弧线				
+			context.arc(100, 300, 40, 0, Math.PI, true); 	//(PI radians = 180 degrees)			
+			context.stroke();
+
+			// 画一个实心圆
+			context.beginPath();
+			// 在（100，300）处逆时针画一个半径为30，角度为0到360度的圆				
+			context.arc(100, 300, 30, 0, 2 * Math.PI, true); //(2*PI radians = 360 degrees)				
+			context.fill();
+
+			// 画一个3/4弧
+			context.beginPath();
+			// 在（200，300）处逆时针画一个半径为25，角度为0到270度的弧 				
+			context.arc(200, 300, 25, 0, 3 / 2 * Math.PI, false); //(3/2*PI radians = 270 degrees)				
+			context.stroke();
 		}
 	</script>
 </head>
