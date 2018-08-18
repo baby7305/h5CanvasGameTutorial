@@ -89,6 +89,27 @@
 			// 绘制空心的文本
 			context.font = '16pt Arial';
 			context.strokeText('This is stroked in 16pt Arial...', 330, 80);
+
+			// 自定义画笔样式（颜色和纹理）
+			// 设置填充颜色为红色
+			context.fillStyle = "red";
+			// 画一个红色的实心矩形
+			context.fillRect(310, 160, 100, 50);
+
+			// 设置边线颜色为绿色
+			context.strokeStyle = "green";
+			// 画一个绿色的空心矩形
+			context.strokeRect(310, 240, 100, 50);
+
+			// 使用rgb()设置填充颜色为红色
+			context.fillStyle = "rgb(255,0,0)";
+			// 画一个红色的实心矩形
+			context.fillRect(420, 160, 100, 50);
+
+			// 设置填充颜色为绿色且alpha值（透明度）为0.6
+			context.fillStyle = "rgba(0,255,0,0.6)";
+			// 画一个半透明的绿色实心矩形
+			context.fillRect(450, 180, 100, 50);
 		}
 	</script>
 </head>
