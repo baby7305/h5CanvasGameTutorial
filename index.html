@@ -12,14 +12,31 @@
 			// 获取该canvas的2D绘图环境
 			var context = canvas.getContext('2d');
 			// 绘图代码将出现在这里
+
+			// 绘制图像
+
+			// 获取图片对象的引用
+			var image = document.getElementById('spaceship');
+
+			// 在(0,350)处绘制图片
+			context.drawImage(image, 0, 350);
+
+			// 缩小图片至原来一半的大小
+			context.drawImage(image, 0, 400, 100, 25);
+
+			// 绘制图片的局部
+			context.drawImage(image, 0, 0, 60, 50, 0, 420, 60, 50);
+
 		}
 	</script>
 </head>
 
 <body onload="pageLoaded()">
-	<canvas width="600" height="400" id="testcanvas" style="border:1px solid black;">
+	<canvas width="600" height="480" id="testcanvas" style="border:1px solid black;">
 		Your browser does not support the HTML5 Canvas tag. Please shift to a newer browser
 	</canvas>
+	<br>
+	<img src="img/spaceship.png" id="spaceship">
 
 </body>
 
