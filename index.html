@@ -7,12 +7,19 @@
 	<script type="text/javascript" charset="UTF-8">
 		//这个函数将在页面完全加载后调用
 		function pageLoaded() {
-			alert('Hello World');
+			// 获取canvas对象的引用
+			var canvas = document.getElementById('testcanvas');
+			// 获取该canvas的2D绘图环境
+			var context = canvas.getContext('2d');
+			// 绘图代码将出现在这里
 		}
 	</script>
 </head>
 
 <body onload="pageLoaded()">
+	<canvas width="600" height="400" id="testcanvas" style="border:1px solid black;">
+		Your browser does not support the HTML5 Canvas tag. Please shift to a newer browser
+	</canvas>
 
 </body>
 
