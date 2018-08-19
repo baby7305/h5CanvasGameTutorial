@@ -22,6 +22,29 @@
 	<script>
 		image.onload = function () {
 			alert('Image finished loading');
+
+		}
+
+	</script>
+	<script>
+		var imageLoader = {
+			loaded: true,
+			loadedImage: 0,
+			totalImages: 0,
+			load: function (url) {
+				this.totalImages++;
+				this.load = false;
+				var image = new Image();
+				image.src = url;
+				image.onload = function () {
+					imageLoader.loadedImages++;
+					if (imageLoader.loadedImages === imageLoader.totalImages) {
+						image.onload = true;
+					}
+					image.onload = undefined;
+				}
+				return image;
+			}
 		}
 	</script>
 </head>
