@@ -82,6 +82,21 @@ var levels = {
 
 	// 为某一关加载所有的数据和图像
 	load: function (number) {
+		// 声明一个新的当前关卡对象 
+		game.currentLevel = { number: number };
+		game.score = 0;
+
+		document.getElementById("score").innerHTML = "Score: " + game.score;
+		var level = levels.data[number];
+
+		// 加载背景、前景和弹弓图像 
+		game.currentLevel.backgroundImage = loader.loadImage("images/backgrounds/" + level.background + ".png");
+		game.currentLevel.foregroundImage = loader.loadImage("images/backgrounds/" + level.foreground + ".png");
+		game.slingshotImage = loader.loadImage("images/slingshot.png");
+		game.slingshotFrontImage = loader.loadImage("images/slingshot-front.png");
+
+		// 一旦所有的图像加载完成，就调用game.start()函数 
+		loader.onload = game.start;
 	}
 };
 
