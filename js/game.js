@@ -80,9 +80,98 @@ var game = {
 
 	},
 
+	// 画面最大平移速度，单位为像素每帧
+	maxSpeed: 3,
+
+	// 画面中心移动到newCenter
+	// (或者至少尽可能接近)
+	panTo: function (newCenter) {
+
+		// 最小和最大平移偏移量
+		var minOffset = 0;
+		var maxOffset = game.currentLevel.backgroundImage.width - game.canvas.width;
+
+		// 屏幕的当前中心是左侧偏移的屏幕宽度的一半
+		var currentCenter = game.offsetLeft + game.canvas.width / 2;
+
+		// 如果新中心和当前中心之间的距离> 0且我们没有平移到最小和最大偏移限制，请保持平移
+		if (Math.abs(newCenter - currentCenter) > 0 && game.offsetLeft <= maxOffset && game.offsetLeft >= minOffset) {
+			//我们将在每个tick中从newCenter到currentCenter的距离减半
+			//这将允许缓和
+			var deltaX = (newCenter - currentCenter) / 2;
+
+			//但是如果delta X真的很高，屏幕会过快播放，所以如果它大于maxSpeed
+			if (Math.abs(deltaX) > game.maxSpeed) {
+				// Limit delta x to game.maxSpeed (并保持delta X的标志)
+				deltaX = game.maxSpeed * Math.sign(deltaX);
+			}
+
+			// 如果我们几乎达到了目标，那么就转到这个结果
+			if (Math.abs(deltaX) <= 1) {
+				deltaX = (newCenter - currentCenter);
+			}
+
+			// 最后将调整后的deltaX添加到offsetX，以便我们按deltaX移动屏幕
+			game.offsetLeft += deltaX;
+
+			// 并确保我们不超过最小或最大限制
+			if (game.offsetLeft <= minOffset) {
+				game.offsetLeft = minOffset;
+
+				// 让调用函数知道我们已尽可能接近newCenter
+				return true;
+			} else if (game.offsetLeft >= maxOffset) {
+				game.offsetLeft = maxOffset;
+
+				// 让调用函数知道我们已尽可能接近newCenter
+				return true;
+			}
+
+		} else {
+			// 让调用函数知道我们已尽可能接近newCenter
+			return true;
+		}
+	},
+
 	handleGameLogic: function () {
-		//临时函数，使画面向右偏移 
-		game.offsetLeft++;
+		if (game.mode === "intro") {
+			if (game.panTo(700)) {
+				game.mode = "load-next-hero";
+			}
+		}
+
+		if (game.mode === "wait-for-firing") {
+			if (mouse.dragging) {
+				game.panTo(mouse.x + game.offsetLeft);
+			} else {
+				game.panTo(game.slingshotX);
+			}
+		}
+
+		if (game.mode === "load-next-hero") {
+			//首先计算英雄和敌人并填充各自的数组
+			//检查是否还有活着的敌人，如果没有，则结束等级（成功）
+			//检查是否还有其他英雄要加载，如果没有结束关卡（失败）
+			//加载英雄并将模式设置为等待射击
+			game.mode = "wait-for-firing";
+		}
+
+		if (game.mode === "firing") {
+			//如果鼠标按钮关闭，请允许英雄被拖动并瞄准
+			//如果没有，将英雄射向空中
+		}
+
+		if (game.mode === "fired") {
+			//当他飞过时，平移到当前英雄的位置
+			//等到英雄停止移动或超出范围
+		}
+
+
+		if (game.mode === "level-success" || game.mode === "level-failure") {
+			//首先平移到左边
+			//然后将游戏显示为已结束并显示结束屏幕
+		}
+
 	},
 
 	animate: function () {
