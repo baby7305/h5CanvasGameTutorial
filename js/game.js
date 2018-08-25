@@ -1,11 +1,11 @@
 var game = {
-	// Start initializing objects, preloading assets and display start screen
+	// 开始初始化对象，预加载资源，并显示开始画面
 	init: function () {
-		// Get handler for game canvas and context
+		// 获取游戏画布及绘图环境的引用
 		game.canvas = document.getElementById("gamecanvas");
 		game.context = game.canvas.getContext("2d");
 
-		// Hide all game layers and display the start screen
+		// 隐藏所有的游戏图层，显示开始画面
 		game.hideScreens();
 		game.showScreen("gamestartscreen");
 	},
@@ -13,7 +13,7 @@ var game = {
 	hideScreens: function () {
 		var screens = document.getElementsByClassName("gamelayer");
 
-		// Iterate through all the game layers and set their display to none
+		// 迭代所有游戏图层并将其显示设置为无
 		for (let i = screens.length - 1; i >= 0; i--) {
 			var screen = screens[i];
 
@@ -34,7 +34,7 @@ var game = {
 	},
 }
 
-// Intialize game once page has fully loaded
+// 页面完全加载后初始化游戏
 window.addEventListener("load", function () {
 	game.init();
 });
