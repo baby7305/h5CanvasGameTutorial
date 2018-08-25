@@ -41,6 +41,72 @@ var game = {
 		game.hideScreens();
 		game.showScreen("levelselectscreen");
 	},
+
+	// 存储当前游戏状态 - intro, wait-for-firing, firing, fired, load-next-hero, success, failure 
+	mode: "intro",
+
+	// X & Y 弹弓的坐标 
+	slingshotX: 140,
+	slingshotY: 280,
+
+	// X & Y 带子附着在弹弓上的点的坐标 
+	slingshotBandX: 140 + 55,
+	slingshotBandY: 280 + 23,
+
+	// 标记以检查游戏是否已结束 
+	ended: false,
+
+	// 比赛得分 
+	score: 0,
+
+	// X 用于从左到右平移屏幕的轴偏移 
+	offsetLeft: 0,
+
+	start: function () {
+		game.hideScreens();
+
+		// 显示游戏画布和分数 
+		game.showScreen("gamecanvas");
+		game.showScreen("scorescreen");
+
+		game.mode = "intro";
+		game.currentHero = undefined;
+
+		game.offsetLeft = 0;
+		game.ended = false;
+
+		game.animationFrame = window.requestAnimationFrame(game.animate, game.canvas);
+
+	},
+
+	handleGameLogic: function () {
+		//临时函数，使画面向右偏移 
+		game.offsetLeft++;
+	},
+
+	animate: function () {
+
+		// 处理平移，游戏状态和控制流程 
+		game.handleGameLogic();
+
+		//使用视差滚动绘制背景 
+		//首先绘制背景图像，偏移offsetLeft一小部分距离（1/4） 
+		//分数越大，背景越接近 
+		game.context.drawImage(game.currentLevel.backgroundImage, game.offsetLeft / 4, 0, game.canvas.width, game.canvas.height, 0, 0, game.canvas.width, game.canvas.height);
+		// 然后绘制前景图像，偏移整个offsetLeft距离 
+		game.context.drawImage(game.currentLevel.foregroundImage, game.offsetLeft, 0, game.canvas.width, game.canvas.height, 0, 0, game.canvas.width, game.canvas.height);
+
+
+		// 绘制弹弓的底部，偏移整个offsetLeft距离 
+		game.context.drawImage(game.slingshotImage, game.slingshotX - game.offsetLeft, game.slingshotY);
+
+		// 画出弹弓的前部，偏移整个offsetLeft距离 
+		game.context.drawImage(game.slingshotFrontImage, game.slingshotX - game.offsetLeft, game.slingshotY);
+
+		if (!game.ended) {
+			game.animationFrame = window.requestAnimationFrame(game.animate, game.canvas);
+		}
+	},
 };
 
 var levels = {
