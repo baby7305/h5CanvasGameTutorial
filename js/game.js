@@ -7,6 +7,7 @@ var game = {
 
 		// 初始化对象
 		levels.init();
+		loader.init();
 
 		// 隐藏所有的游戏图层，显示开始画面
 		game.hideScreens();
@@ -81,6 +82,87 @@ var levels = {
 
 	// 为某一关加载所有的数据和图像
 	load: function (number) {
+	}
+};
+
+var loader = {
+	loaded: true,
+	loadedCount: 0, // 已加载的资源数 
+	totalCount: 0, // 需要被加载的资源总数 
+
+	init: function () {
+		// 检查浏览器支持的声音格式 
+		var mp3Support, oggSupport;
+		var audio = document.createElement("audio");
+
+		if (audio.canPlayType) {
+			// 当前canPlayType()方法返回""、"maybe"或"probably" 
+			mp3Support = "" !== audio.canPlayType("audio/mpeg");
+			oggSupport = "" !== audio.canPlayType("audio/ogg; codecs=\"vorbis\"");
+		} else {
+			// audio标签不被支持 
+			mp3Support = false;
+			oggSupport = false;
+		}
+
+		// 检查ogg、mp3,如果都不支持，就将soundFileExtn设置为undefined 
+		loader.soundFileExtn = oggSupport ? ".ogg" : mp3Support ? ".mp3" : undefined;
+	},
+
+	loadImage: function (url) {
+		this.loaded = false;
+		this.totalCount++;
+
+		game.showScreen("loadingscreen");
+
+		var image = new Image();
+
+		image.addEventListener("load", loader.itemLoaded, false);
+		image.src = url;
+
+		return image;
+	},
+
+	soundFileExtn: ".ogg",
+
+	loadSound: function (url) {
+		this.loaded = false;
+		this.totalCount++;
+
+		game.showScreen("loadingscreen");
+
+		var audio = new Audio();
+
+		audio.addEventListener("canplaythrough", loader.itemLoaded, false);
+		audio.src = url + loader.soundFileExtn;
+
+		return audio;
+	},
+
+	itemLoaded: function (ev) {
+		// Stop listening for event type (load or canplaythrough) for this item now that it has been loaded 
+		ev.target.removeEventListener(ev.type, loader.itemLoaded, false);
+
+		loader.loadedCount++;
+
+		document.getElementById("loadingmessage").innerHTML = "Loaded " + loader.loadedCount + " of " + loader.totalCount;
+
+		if (loader.loadedCount === loader.totalCount) {
+			// Loader has loaded completely.. 
+			// Reset and clear the loader 
+			loader.loaded = true;
+			loader.loadedCount = 0;
+			loader.totalCount = 0;
+
+			// Hide the loading screen 
+			game.hideScreen("loadingscreen");
+
+			// and call the loader.onload method if it exists 
+			if (loader.onload) {
+				loader.onload();
+				loader.onload = undefined;
+			}
+		}
 	}
 };
 
