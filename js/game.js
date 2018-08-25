@@ -8,6 +8,7 @@ var game = {
 		// 初始化对象
 		levels.init();
 		loader.init();
+		mouse.init();
 
 		// 隐藏所有的游戏图层，显示开始画面
 		game.hideScreens();
@@ -244,6 +245,48 @@ var loader = {
 				loader.onload = undefined;
 			}
 		}
+	}
+};
+
+var mouse = {
+	x: 0,
+	y: 0,
+	down: false,
+	dragging: false,
+
+	init: function () {
+		var canvas = document.getElementById("gamecanvas");
+
+		canvas.addEventListener("mousemove", mouse.mousemovehandler, false);
+		canvas.addEventListener("mousedown", mouse.mousedownhandler, false);
+		canvas.addEventListener("mouseup", mouse.mouseuphandler, false);
+		canvas.addEventListener("mouseout", mouse.mouseuphandler, false);
+	},
+
+	mousemovehandler: function (ev) {
+		var offset = game.canvas.getBoundingClientRect();
+
+		mouse.x = ev.clientX - offset.left;
+		mouse.y = ev.clientY - offset.top;
+
+		if (mouse.down) {
+			mouse.dragging = true;
+		}
+
+		ev.preventDefault();
+	},
+
+	mousedownhandler: function (ev) {
+		mouse.down = true;
+
+		ev.preventDefault();
+	},
+
+	mouseuphandler: function (ev) {
+		mouse.down = false;
+		mouse.dragging = false;
+
+		ev.preventDefault();
 	}
 };
 
